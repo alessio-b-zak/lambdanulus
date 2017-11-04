@@ -20,7 +20,8 @@ remove = foldl (flip delete)
 --Need to sort out the exact semantics of the expression language
 data BaseExpr : (names : Vect n Name) -> Type where
   Var : (n : Name) -> BaseExpr [n]
-  Add : BaseExpr fstNames -> BaseExpr sndNames -> BaseExpr (fstNames ++ sndNamets)
+  Const : BaseExpr []
+  OtherApp : BaseExpr fstNames -> BaseExpr sndNames -> BaseExpr (fstNames ++ sndNamets)
 
 mutual
   data NExpr : (names : Vect n Name) -> Type where
@@ -35,4 +36,20 @@ mutual
 --  --Now I wish I had used DeBrujin Indices.
   nTree : (nexpr : NExpr someNames) -> (Vect (calcNat nexpr) (Tree Name))
   nTree (Lam someNames x) = map (Leaf) someNames
-  nTree (App y z m) = ?nTree_rhs_2
+  nTree (App y (IsPathOf {i} p) second) = let initialRoots = nTree y 
+                                              newPath = elemPathToPath p
+                                              elemAtI = i `index` initialRoots 
+                                              newElem = substituteTree elemAtI newPath (nTree second) in
+                                              replaceAt i newElem initialRoots 
+
+
+
+sf : NExpr ["x", "y"]
+sf = App (Lam ["x", "y"] (OtherApp (Var "x") (Var "y"))) (IsPathOf {i=0} (EndPath  "x")) (Lam [] (Const))
+
+                                              --updateAt i (\roots => substituteTree roots newPath (nTree second)) initialRoots
+                                               -- newLeaves = (nTree second) in
+--substituteTree (i `index` roots) d (nTree p)
+
+
+
