@@ -49,6 +49,7 @@ Given by the below grammar
 \begin{equation}
    = ((\lambda\{y_1, y_2, x_2\}\,.\, y_1 + y_2 + x_2) \hspace{10mm}|\hspace{2mm}@-equivalence
 \end{equation}
+\noindent In our implementation this reduction applies recursively to any $\lambda$s nested deeper than our original $\lambda$
 
 \noindent There also exists an operation to reduce any $\lambda^n$-expression to a $\lambda$-expression. This involves applying @-equivalence until all @$p$ are consumed. Once this has been done it can be reduced to a canonical form.
 
@@ -60,6 +61,9 @@ Given by the below grammar
    = \lambda x_1 .\>...\>\lambda x_n\>.\,M  
 \end{equation}
 \par
+\noindent The above operation can be used alongside the path to target a specific region of blocks. The second operation needs to be followed by some sort of lift operation. (This seems like it could be categorical) This needs to be investigated more as there are terms which don't map to the $\lambda^n$-Calculus as nicely as it would be hoped.
+
+
 \noindent This calculus could potentially be extended so that we can apply a list of expressions at a given path producing the production rules as follows
 \begin{lstlisting}
  e -> λ{x$_{1}$,...,x$_n$}.$M$ | $($e $@$p $[$e$_{1}$,...,e$_{n}$$]$$)$| x
