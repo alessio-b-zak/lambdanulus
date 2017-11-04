@@ -19,7 +19,7 @@
 \begin{document}
 \maketitle
 \vspace{-10mm}
-\noindent My intepretation of the Lambda Calculus derivative that we have produced. In this document all variables are assumed to have unique names. Fuck you DeBrujin indices. This contains an untyped implementation to clarify syntax and semantics. A typed implementation will follow when we finalise the intepretation.
+\noindent My intepretation of the Lambda Calculus derivative that we have produced. In this document all variables are assumed to have unique names. This contains an untyped implementation to clarify syntax and semantics. A typed implementation will follow when we finalise the intepretation.
 \section{Syntax}
 Given by the below grammar
 
@@ -68,12 +68,12 @@ Given by the below grammar
 
 \noindent The lift operator essentially delves into the structure of the $\lambda$-expression and pulls all binders to the outermost level. As follows:
 
-\begin{equation}
-    \lambda\{x_1,..., x_n\}\,.\,M
-\end{equation}
-\begin{equation}
-   = \lambda x_1 .\>...\>\lambda x_n\>.\,M  
-\end{equation}
+% \begin{equation}
+%     \lambda\{x_1,..., x_n\}\,.\,M
+% \end{equation}
+% \begin{equation}
+%    = \lambda x_1 .\>...\>\lambda x_n\>.\,M  
+% \end{equation}
 
 \noindent This calculus could potentially be extended so that we can apply a list of expressions at a given path producing the production rules as follows
 \begin{lstlisting}
