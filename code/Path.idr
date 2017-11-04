@@ -15,6 +15,10 @@ data ElemPath : (c : Tree treeType) -> Type where
   EndPath  : (ys : treeType) -> ElemPath (Leaf ys)
   MkPath : (c : treeType) -> ElemPath (i `index` trees)  -> ElemPath (Branch c trees)
 
+public export
+data PathListTree : (trees : Vect n (Tree a)) -> Type where
+  IsPathOf : (treePath : ElemPath (i `index` trees)) -> PathListTree trees
+
 -- exampleTree : Tree Char 
 -- exampleTree = Branch 'q' [Leaf 'b']
 
