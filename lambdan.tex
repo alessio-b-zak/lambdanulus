@@ -44,7 +44,7 @@ Given by the below grammar
 \noindent As far as I can tell there exists 1 or potentially 2 reduction rules on this calculus. An @ production can be reduced as follows (This is equivalent to flattening a block):
 
 \begin{equation}
-    ((\lambda\{x_1, x_2\}\,.\, x_1 + x_2) \>\>\>@[x_1] \>\>\>\>(\lambda\{y_1, y_2\}\,.\, y_1 + y_2)) 
+    ((\lambda\{x_1, x_2\}\,.\, x_1 + x_2) \>\>\>@[x_1]\>\>\>\>(\lambda\{y_1, y_2\}\,.\, y_1 + y_2)) 
 \end{equation}
 \begin{equation}
    = ((\lambda\{y_1, y_2, x_2\}\,.\, y_1 + y_2 + x_2) \hspace{10mm}|\hspace{2mm}@-equivalence
@@ -70,10 +70,11 @@ Given by the below grammar
 \noindent This would allow the binding of any number of the variables in the receiving expression. 
 
 \noindent I envision this could be used as follows:
-
-
+\begin{equation}
+    \lambda\{x_1,x_2,x_3\}\,.\,x_1 + x_2 + x_3 \>\>\>@[[x_1, x_2]]\>\>\>\>[3,3]
+\end{equation}
 \noindent Any expression in this second calculus is equivalent to a number of expressions of the first calculus.
 
-\noindent
+\noindent You could probably keep going with the extended version so that you could bind to abitrary many variables with the same expression but this is all I can be bothered to type up for now.
 \end{document}
 
