@@ -27,11 +27,11 @@ data BaseExpr : (names : List Name) -> Type where
   Var : (n : Name) -> BaseExpr [n]
   Add : BaseExpr fstNames -> BaseExpr sndNames -> BaseExpr (fstNames ++ sndNamets)
 
+
 mutual
- data NExpr : (names : List Name) -> Type where
-
-   nameTree :  NExpr dames ->  Tree a
-
-   Lam : (capturing_set : List Name) -> NExpr nxrp -> NExpr (remove nxrp capturing_set)
-   App : (n : NExpr names) -> ElemPath (nameTree  n)-> (m : NExpr names') -> NExpr (names ++ names')
+  data NExpr : (names : List Name) -> Type where
+    Lam : (capturing_set : List Name) -> BaseExpr capturing_set -> NExpr capturing_set
+    App : (n : NExpr names) -> ElemPath (nTree n) -> (m : NExpr names') -> NExpr (names ++ names')
+    
+  nTree : NExpr someNames -> Tree Name
 
