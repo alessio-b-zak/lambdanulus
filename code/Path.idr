@@ -23,10 +23,14 @@ public export
 data PathListTree : (trees : Vect n (Tree a)) -> Type where
   IsPathOf : (treePath : ElemPath (i `index` trees)) -> PathListTree trees
 
+substituteTree : (receiveTr : Tree a) -> Path receiveTr -> Vect n (Tree a) -> Tree a
+substituteTree (Branch x ts) (i :: y) pushTr = substituteTree (i `index` ts) y pushTr
+substituteTree (Leaf x) [] [] = Leaf x
+substituteTree (Leaf x) [] a@(y :: xs) = Branch x a
 
-substituteTree : (receiveTr : Tree a) -> Path receiveTr -> (pushTr : Tree a) -> Tree a
-substituteTree (Branch x ts) path pushTr = ?substituteTree_rhs_1
-substituteTree (Leaf x) path pushTr = ?substituteTree_rhs_2
+elemPathToPath : ElemPath tree -> Path tree
+elemPathToPath (EndPath ys) = Nil
+elemPathToPath (MkPath {i} c x) = i :: elemPathToPath x 
 
 -- exampleTree : Tree Char 
 -- exampleTree = Branch 'q' [Leaf 'b']
