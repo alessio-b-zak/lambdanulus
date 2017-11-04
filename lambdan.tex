@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\setlength{\parskip}{1.8em}
+
+\usepackage{listings}
+\lstset{
+  mathescape,         
+  basicstyle=\itshape,
+  xleftmargin=3em,
+  literate=
+  {->}{$\rightarrow$}{2}
+  {ε}{$\varepsilon$}{1}
+  {λ}{$\lambda$}{1}
+}
+
+
+\title{$\lambda^{n}$ulus}
+\date{}
+\begin{document}
+\maketitle
+\vspace{-10mm}
+\noindent My intepretation of the Lambda Calculus derivative that we have produced. In this document all variables are assumed to have unique names. Fuck you DeBrujin indices. This contains an untyped implementation to clarify syntax and semantics. A typed implementation will follow when we finalise the intepretation.
+\section{Syntax}
+Given by the below grammar
+
+\begin{lstlisting}
+ e -> λ{x$_{1}$,...,x$_n$}.$M$ | $($e$_1$ $@$p e$_{2}$$)$| x
+ p -> $[$$x_1$,...,$x_n$$]$
+ x -> $String$
+\end{lstlisting}
+
+\noindent The first $e$ production rules represents an abstraction of n variables within M. This represents \emph{all} the bound variables within M. (I feel like this could potentially be extended to also include the standard Lambda Calculus app to allow for nested Lambdas but don't really see what that would buy you).
+\par
+\noindent The second $e$ production rule represents the delayed application of another expression to a given variable found at the path represented by $p$. A path is a list of variables that show where within and to what variable the tree of suspended computations to apply a given expression. There exist various constraints on paths i.e. that they represent valid paths down the computational tree.
+\par
+\noindent Examples of this calculus can be found below:
+\begin{equation}
+    (((\lambda\{x_1, x_2\}\,.\, x_1 + x_2) \>\>\>@[x_1] \>\>\>\>3) \>\>\>@[x_2] \>\>\>\>3)
+\end{equation}
+\begin{equation}
+    (((\lambda\{x_1, x_2\}\,.\, x_1 + x_2) \>\>\>@[x_1] \>\>\>\>(\lambda\{y_1, y_2\}\,.\, y_1 + y_2)) \>\>\>@[x_1, y_1] \>\>\>\>3)
+\end{equation}
+
+\noindent As far as I can tell there exists 1 or potentially 2 reduction rules on this calculus. An @ production can be reduced as follows (This is equivalent to flattening a block):
+
+\begin{equation}
+    ((\lambda\{x_1, x_2\}\,.\, x_1 + x_2) \>\>\>@[x_1] \>\>\>\>(\lambda\{y_1, y_2\}\,.\, y_1 + y_2)) 
+\end{equation}
+\begin{equation}
+   = ((\lambda\{y_1, y_2, x_2\}\,.\, y_1 + y_2 + x_2) \hspace{10mm}|\hspace{2mm}@-equivalence
+\end{equation}
+
+\noindent There also exists an operation to reduce any $\lambda^n$-expression to a $\lambda$-expression. This involves applying @-equivalence until all @$p$ are consumed. Once this has been done it can be reduced to a canonical form.
+
+\noindent Given that every $\lambda^{n}$-expression is equivalent to $|\verb|capturing_set||!$ equivalent $\lambda$-expressions in the ordinary $\lambda$ Calculus we can abitrarily produce a $\lambda$-expression as follows: 
+\begin{equation}
+    \lambda\{x_1,..., x_n\}\,.\,M
+\end{equation}
+\begin{equation}
+   = \lambda x_1 .\>...\>\lambda x_n\>.\,M  
+\end{equation}
+\par
+\noindent This calculus could potentially be extended so that we can apply a list of expressions at a given path producing the production rules as follows
+\begin{lstlisting}
+ e -> λ{x$_{1}$,...,x$_n$}.$M$ | $($e $@$p $[$e$_{1}$,...,e$_{n}$$]$$)$| x
+ p -> $[$$x_1$,...,$[$$y_1$,..,$y_n$$]$ @$\>$$x_n$$]$
+ x -> $String$
+\end{lstlisting}
+\vspace{-5mm}
+\noindent This would allow the binding of any number of the variables in the receiving expression. 
+
+\noindent I envision this could be used as follows:
+
+
+\noindent Any expression in this second calculus is equivalent to a number of expressions of the first calculus.
+
+\noindent
+\end{document}
+
