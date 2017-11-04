@@ -30,6 +30,9 @@ Given by the below grammar
 \end{lstlisting}
 
 \noindent The first $e$ production rules represents an abstraction of n variables within M. This represents \emph{all} the bound variables within M. (I feel like this could potentially be extended to also include the standard Lambda Calculus app to allow for nested Lambdas but don't really see what that would buy you).
+
+\par
+\noindent A key point that I haven't quite figured out is what is M. M appears to be some kind of $\lambda^n$-expression but with no free variables.
 \par
 \noindent The second $e$ production rule represents the delayed application of another expression to a given variable found at the path represented by $p$. A path is a list of variables that show where within and to what variable the tree of suspended computations to apply a given expression. There exist various constraints on paths i.e. that they represent valid paths down the computational tree.
 \par
@@ -63,6 +66,14 @@ Given by the below grammar
 \par
 \noindent The above operation can be used alongside the path to target a specific region of blocks. The second operation needs to be followed by some sort of lift operation. (This seems like it could be categorical) This needs to be investigated more as there are terms which don't map to the $\lambda^n$-Calculus as nicely as it would be hoped.
 
+\noindent The lift operator essentially delves into the structure of the $\lambda$-expression and pulls all binders to the outermost level. As follows:
+
+\begin{equation}
+    \lambda\{x_1,..., x_n\}\,.\,M
+\end{equation}
+\begin{equation}
+   = \lambda x_1 .\>...\>\lambda x_n\>.\,M  
+\end{equation}
 
 \noindent This calculus could potentially be extended so that we can apply a list of expressions at a given path producing the production rules as follows
 \begin{lstlisting}
