@@ -10,6 +10,10 @@ data Tree : (treeType : Type) -> Type where
   Leaf : treeType
         -> Tree treeType
 
+data Path : (tree : Tree a) -> Type where
+  Nil : Path (Leaf b)
+  (::) : (i : Fin (S b)) -> (Path (i `index` tees)) -> Path (Branch a tees)
+
 public export
 data ElemPath : (c : Tree treeType) -> Type where
   EndPath  : (ys : treeType) -> ElemPath (Leaf ys)
@@ -18,6 +22,11 @@ data ElemPath : (c : Tree treeType) -> Type where
 public export
 data PathListTree : (trees : Vect n (Tree a)) -> Type where
   IsPathOf : (treePath : ElemPath (i `index` trees)) -> PathListTree trees
+
+
+substituteTree : (receiveTr : Tree a) -> Path receiveTr -> (pushTr : Tree a) -> Tree a
+substituteTree (Branch x ts) path pushTr = ?substituteTree_rhs_1
+substituteTree (Leaf x) path pushTr = ?substituteTree_rhs_2
 
 -- exampleTree : Tree Char 
 -- exampleTree = Branch 'q' [Leaf 'b']
