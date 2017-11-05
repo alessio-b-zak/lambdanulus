@@ -24,15 +24,13 @@
 Given by the below grammar
 
 \begin{lstlisting}
- e -> λ{x$_{1}$,...,x$_n$}.$M$ | $($e$_1$ $@$p e$_{2}$$)$| x
+ e -> λ{x$_{1}$,...,x$_n$}.$e$ | $($e$_1$ $@$p e$_{2}$$)$
  p -> $[$$x_1$,...,$x_n$$]$
  x -> $String$
+ c -> $constant$
 \end{lstlisting}
 
-\noindent The first $e$ production rules represents an abstraction of n variables within M. This represents \emph{all} the bound variables within M. (I feel like this could potentially be extended to also include the standard Lambda Calculus app to allow for nested Lambdas but don't really see what that would buy you).
-
-\par
-\noindent A key point that I haven't quite figured out is what is M. M appears to be some kind of $\lambda^n$-expression but with no free variables.
+\noindent The first $e$ production rules represents an abstraction of n variables within the bound expression. \par
 \par
 \noindent The second $e$ production rule represents the delayed application of another expression to a given variable found at the path represented by $p$. A path is a list of variables that show where within and to what variable the tree of suspended computations to apply a given expression. There exist various constraints on paths i.e. that they represent valid paths down the computational tree.
 \par
