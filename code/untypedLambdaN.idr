@@ -27,7 +27,11 @@ data PathListTree : (trees : Vect n (Tree a)) -> Type where
 
 public export
 substituteTree : (receiveTr : Tree a) -> Path receiveTr -> Vect n (Tree a) -> Tree a
-substituteTree (Branch x ts) (i :: y) pushTr = substituteTree (i `index` ts) y pushTr
+substituteTree (Branch x ts) (i :: y) pushTr = let initialRoot = i `index` ts 
+                                                   newRoot = substituteTree initialRoot y pushTr 
+                                                   newVect = replaceAt i newRoot ts in
+                                                   Branch x newVect 
+
 substituteTree (Leaf x) [] [] = Leaf x
 substituteTree (Leaf x) [] a@(y :: xs) = Branch x a
 
@@ -104,9 +108,9 @@ expr4 = /["z"] -> {v"z"}
 expr5 : NExpr ["t"]
 expr5 = /["t"] -> {v"t"}
 
---Yes I know i had to implement the deBrujin version anyway I was too far gone leave me alone.
+-- Yes I know i had to implement the deBrujin version anyway I was too far gone leave me alone.
 
 sf2 : NExpr ["x", "y", "q","z", "t"]
-sf2 = ((expr1 @(q 1 ("y";)) expr2) @(q 1 ("y" 0 ,"q";)) expr4) -- @(q 1 ("y" 0, "q" 0, "z";)) expr5)
+sf2 = (((expr1 @(q 1 ("y";)) expr2) @(q 1 ("y" 0 ,"q";)) expr4)  @(q 1 ("y" 0, "q" 0, "z";)) expr5)
 
 
