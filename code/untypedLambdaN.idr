@@ -44,12 +44,21 @@ mutual
 
 
 
+syntax [bexpr1] "$$" [bexpr2] = OtherApp bexpr1 bexpr2
+syntax [expr1] "@"[path] [expr2] = App expr1 path expr2
+syntax "/"[capturing_set] "->" "{"[base_expr]"}" = Lam capturing_set base_expr
+syntax "v"[expr] = Var expr
+syntax "c" = Const
+
 sf : NExpr ["x", "y"]
 sf = App (Lam ["x", "y"] (OtherApp (Var "x") (Var "y"))) (IsPathOf {i=0} (EndPath  "x")) (Lam [] (Const))
 
-                                              --updateAt i (\roots => substituteTree roots newPath (nTree second)) initialRoots
-                                               -- newLeaves = (nTree second) in
---substituteTree (i `index` roots) d (nTree p)
 
+expr1 : NExpr ["x", "y"]
+expr1 = /["x", "y"] -> {(v"x") $$  (v"y")}
 
+expr2 : NExpr []
+expr2 = /[] -> {c} 
 
+sf2 : NExpr ["x", "y"]
+sf2 = (expr1) @(IsPathOf {i=0} (EndPath"x")) expr2 
