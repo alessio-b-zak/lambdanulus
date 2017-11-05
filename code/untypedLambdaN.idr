@@ -21,12 +21,9 @@ data ElemPath : (c : Tree treeType) -> Type where
   EndPath  : (ys : treeType) -> ElemPath (Leaf ys)
   MkPath : (c : treeType) -> ElemPath (i `index` trees)  -> ElemPath (Branch c trees)
 
-
-
 public export
 data PathListTree : (trees : Vect n (Tree a)) -> Type where
   IsPathOf : (treePath : ElemPath (i `index` trees)) -> PathListTree trees
-
 
 public export
 substituteTree : (receiveTr : Tree a) -> Path receiveTr -> Vect n (Tree a) -> Tree a
@@ -86,6 +83,8 @@ syntax "/"[capturing_set] "->" "{"[base_expr]"}" = Lam capturing_set base_expr
 syntax "v"[expr] = Var expr
 syntax "c" = /[] -> {Const}
 syntax [end]";"= EndPath end
+syntax  [p1] [d] "," [p2] = MkPath {i=d} p1 (p2)
+syntax "q" [d] [path] = IsPathOf {i=d} (path)
 
 sf : NExpr ["x", "y"]
 sf = App (Lam ["x", "y"] (OtherApp (Var "x") (Var "y"))) (IsPathOf {i=0} (EndPath  "x")) (Lam [] (Const))
@@ -96,11 +95,18 @@ expr1 = /["x", "y"] -> {(v"x") $$  (v"y")}
 expr2 : NExpr ["q"]
 expr2 = /["q"] -> {v"q"}
 
-expr3 : NExpr ["g"]
-expr3 = /["g"] -> {v"g"}
+expr3 : NExpr ["g", "h"]
+expr3 = /["g", "h"] -> {(v"g") $$ (v"h")}
 
+expr4 : NExpr ["z"]
+expr4 = /["z"] -> {v"z"}
 
-sf2 : NExpr ["x", "y", "q", "g"]
-sf2 = ((expr1 @(IsPathOf {i=0} ("x";)) c) @(IsPathOf {i=1} ("y";)) expr2) @(IsPathOf {i=1} (MkPath {i=0} "y" ("q";))) expr3 
+expr5 : NExpr ["t"]
+expr5 = /["t"] -> {v"t"}
+
+--Yes I know i had to implement the deBrujin version anyway I was too far gone leave me alone.
+
+sf2 : NExpr ["x", "y", "q","z", "t"]
+sf2 = ((expr1 @(q 1 ("y";)) expr2) @(q 1 ("y" 0 ,"q";)) expr4) -- @(q 1 ("y" 0, "q" 0, "z";)) expr5)
 
 
